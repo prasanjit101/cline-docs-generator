@@ -9,7 +9,7 @@ Cline users often struggle with prompting and using cline to build a project. es
 
 
 ### How It Should Work
-THe user enters an idea, the tech stack, and the features they want to add. The App will then generate a project brief, product context, active context, system patterns, tech context, and progress docs. Along with a .clinerules file to help Cline understand the project. The user will be able to download the docs as a zip file.
+THe user enters an idea, the tech stack, and the features they want to add. The App will then generate a project brief, product context, active context, system patterns, tech context, and progress docs. Along with a .clinerules file. The files will be marked as ready in frontend using a tick mark and the user will be able to download the files as zip file with the name 'docs'.
 
 ### User Experience Goals
 - Minimal UI.

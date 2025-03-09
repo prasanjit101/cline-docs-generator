@@ -12,4 +12,10 @@
 
 ### Dependencies
 - Next.js
+- use shadcn/ui for components
+- use lucide for icons
+- use vercel ai sdk for ai
+- use tailwindcss for styling
+- use react-hook-form for form handling
+- use react-markdown for markdown rendering
 - LangGraph.js
