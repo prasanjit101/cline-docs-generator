@@ -1,6 +1,6 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Code } from "lucide-react";
+import { Code, FileCode } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -8,7 +8,7 @@ export default function HomePage() {
     <div className="min-h-screen flex flex-col items-center w-1/2 mx-auto py-8">
       {/* Header with GitHub Link */}
       <nav className="w-full max-w-6xl flex justify-between items-center mb-16">
-        <div className="flex items-center"><Code className="mr-2 h-4 w-4" /> cline-docs-generator
+        <div className="flex items-center font-semibold"><FileCode className="mr-2 h-4 w-4" /> cline-docs-generator
         </div>
         <Link
           href="https://github.com/yourusername/cline-docs-generator"
@@ -37,7 +37,7 @@ export default function HomePage() {
 
         <div className="text-center">
           <p className="mb-4">
-            Transforms Cline into a self-documenting development system that maintains context across sessions through a structured <strong>Memory Bank</strong>. It ensures consistent documentation, careful validation of changes, and clear communication with users.
+            Generate docs that transforms Cline into a self-documenting development system that maintains context across sessions through a structured <strong>Memory Bank</strong>. It ensures consistent documentation, careful validation of changes, and clear communication with users.
           </p>
           <h3 className="text-lg font-semibold mb-2">What's it good for?</h3>
           <ul className="list-disc list-inside space-y-1">
