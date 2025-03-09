@@ -2,6 +2,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Code, FileCode } from "lucide-react";
 import Link from "next/link";
+import FormComponent from "@/components/FormComponent";
 
 export default function HomePage() {
   return (
@@ -46,6 +47,12 @@ export default function HomePage() {
             <li>Both new and ongoing development</li>
             <li>Long-term maintenance work</li>
           </ul>
+        </div>
+
+        {/* Form Section */}
+        <div className="mt-12 text-left">
+          <h2 className="text-2xl font-bold mb-6">Generate Documentation</h2>
+          <FormComponent />
         </div>
       </main>
     </div>
