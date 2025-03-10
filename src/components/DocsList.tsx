@@ -5,11 +5,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Badge } from './ui/badge';
 import { cn } from '@/lib/utils';
 import { Card } from './ui/card';
+import { ArrowUpRight } from 'lucide-react';
+import CopyToClipboard from './copyToClipboard';
 
 interface DocItem {
     name: string;
     content: string;
-    status: 'ready' | 'pending';
+    status: 'ready' | 'pending' | 'failed';
+    path: string;
 }
 
 const DocsList = ({ docs }: { docs: DocItem[] }) => {
@@ -38,19 +41,21 @@ const DocsList = ({ docs }: { docs: DocItem[] }) => {
                 <div key={i} className="flex items-center justify-between p-2 border rounded">
                     <span>{doc.name}</span>
                     <div className='flex items-center gap-2'>
-                        <Badge variant={doc.status === 'ready' ? 'default' : 'secondary'}>
-                            {doc.status === 'ready' ? 'Ready' : 'Pending'}
+                        <Badge variant={doc.status === 'ready' ? 'secondary' : doc.status === 'pending' ? 'outline' : 'destructive'}>
+                            {doc.status === 'ready' ? 'Ready' : doc.status === 'pending' ? 'Pending' : 'Failed'}
                         </Badge>
-                        <Button size='sm' onClick={() => handleOpenDoc(i)}>Open</Button>
+                        <Button size='sm' onClick={() => handleOpenDoc(i)}><ArrowUpRight className='w-4 h-4' />Open</Button>
                     </div>
                 </div>
             ))}
 
             <Dialog open={!!openDoc} onOpenChange={() => setOpenDoc(null)}>
                 <DialogContent className="max-w-3xl max-h-[80vh] overflow-auto">
-                    <DialogHeader>
+                    <DialogHeader className='flex items-center justify-between'>
                         <DialogTitle>{currentDoc?.name}</DialogTitle>
+                        <CopyToClipboard text={currentDoc?.content || ''} />
                     </DialogHeader>
+                    <p className='text-sm text-gray-500'>save in docs folder: {currentDoc?.path}</p>
                     <pre className="whitespace-pre-wrap">{currentDoc?.content}</pre>
                 </DialogContent>
             </Dialog>

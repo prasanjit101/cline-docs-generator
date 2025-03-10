@@ -93,25 +93,25 @@ const activeContextPrompt = ChatPromptTemplate.fromMessages([
 
 const systemPatternsPrompt = ChatPromptTemplate.fromMessages([
   systemMessage,
-  new HumanMessage(`
-  Given the following project brief, product context, active context, idea, tech stack, and features, generate a system patterns document that describes the system architecture, key technical decisions, design patterns in use, and component relationships.
+  new HumanMessage(`Given the following project brief, product context, active context, idea, tech stack, and features, generate a system patterns document that describes the system architecture, key technical decisions, design patterns in use, and component relationships.
 
-  Idea: {idea}
-  Tech Stack: {techStack}
-  Features: {features}
-  overview: {overview}
-  
-  Must follow these instructions EXACTLY:
-  1. Your response MUST be a valid JSON object
-  2. The JSON object MUST follow this exact structure:
-    {
-      "summary": "A concise 1-2 sentence summary of the system patterns",
-      "systempatterns": "The full system patterns content in markdown format"
-    }
-  3. Do NOT include any text outside the JSON object
-  4. Do NOT include any comments or explanations
-  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
-  `),
+Idea: {idea}
+Tech Stack: {techStack}
+Features: {features}
+overview: {overview}
+
+Must follow these instructions EXACTLY:
+1. Your response MUST be a valid JSON object
+2. The JSON object MUST follow this exact structure:
+{
+  "summary": "A concise 1-2 sentence summary of the system patterns",
+  "systempatterns": "The full system patterns content in markdown format"
+}
+3. Do NOT include any text outside the JSON object
+4. Do NOT include any comments or explanations
+5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
+6. After new lines put a space. For eg- "\n+-------" will be writtten as "\n +-------"
+`),
 ]);
 
 const techContextPrompt = ChatPromptTemplate.fromMessages([

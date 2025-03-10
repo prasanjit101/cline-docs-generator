@@ -2,12 +2,11 @@
 
 import React, { useState } from 'react';
 import { generateDocs } from '@/lib/server/docsAgent';
-import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
+import DocsList from './DocsList';
 
 interface FormValues {
     idea: string;
@@ -108,34 +107,17 @@ const FormComponent: React.FC = () => {
 
                 {error && <div className='text-red-500 mt-4'>{error}</div>}
 
-            {docs && (
-                    <div className='mt-4'>
-                        <h3>Generated Documentation</h3>
-
-                        <div className='grid grid-cols-2 gap-4'>
-                            <div>
-                            <h4>Project Brief</h4>
-                                <div className='whitespace-pre-wrap font-mono'>{docs.projectbrief}</div>
-                        </div>
-                            <div>
-                            <h4>Product Context</h4>
-                                <div className='whitespace-pre-wrap font-mono'>{docs.productContext}</div>
-                        </div>
-                            <div>
-                            <h4>Active Context</h4>
-                                <div className='whitespace-pre-wrap font-mono'>{docs.activeContext}</div>
-                        </div>
-                            <div>
-                            <h4>System Patterns</h4>
-                                <div className='whitespace-pre-wrap font-mono'>{docs.systemPatterns}</div>
-                        </div>
-                            <div>
-                            <h4>Tech Context</h4>
-                                <div className='whitespace-pre-wrap font-mono'>{docs.techContext}</div>
-                        </div>
-                    </div>
+                <div className="mt-12">
+                    <h2 className="text-2xl font-bold mb-4">Documentation Files</h2>
+                    {!docs && <div className='text-gray-500'>No docs yet.</div>}
+                    {docs && <DocsList docs={[
+                        { name: 'Project Brief', content: docs.projectbrief, status: docs.projectbrief ? 'ready' : 'failed', path: 'docs/projectbrief.md' },
+                        { name: 'Product Context', content: docs.productContext, status: docs.productContext ? 'ready' : 'failed', path: 'docs/productContext.md' },
+                        { name: 'Active Context', content: docs.activeContext, status: docs.activeContext ? 'ready' : 'failed', path: 'docs/activeContext.md' },
+                        { name: 'System Patterns', content: docs.systemPatterns, status: docs.systemPatterns ? 'ready' : 'failed', path: 'docs/systemPatterns.md' },
+                        { name: 'Tech Context', content: docs.techContext, status: docs.techContext ? 'ready' : 'failed', path: 'docs/techContext.md' }
+                    ]} />}
                 </div>
-            )}
             </CardContent>
         </Card>
     );
