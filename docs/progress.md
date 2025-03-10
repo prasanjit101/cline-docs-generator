@@ -1,14 +1,21 @@
-### What Works
-- Basic project setup and file structure.
-- Form component with submission logic.
-- AI-powered documentation generation integration.
-- Documentation display and download functionality.
+# Project Progress
 
-### Current Status
-- Form component fully implemented with all features.
-- Documentation generation and management complete.
-- Robust error handling and loading states implemented.
-- Improved UI/UX for documentation display and interaction.
+## Completed Features
 
-### Known Issues
-- None.
+* [x] Documentation generation form implementation
+* [x] AI SDK and LangGraph integration
+* [x] Radix UI component integration
+* [x] DocsList component implementation
+* [x] Comprehensive UI improvements
+
+## Current Status
+
+* Documentation generation core functionality complete
+* Basic UI components implemented and integrated
+* AI processing pipeline operational
+
+## Remaining Tasks
+
+1. Documentation preview feature
+2. Copy docs to clipboard feature inside modal
+3. Performance optimization

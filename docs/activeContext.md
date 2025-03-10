@@ -1,15 +1,22 @@
+# Active Development Context
 
-**Current Work Focus**
-We are currently working on implementing the core features of {idea} using {techStack} tech stack.
+## Recent Changes
 
-**Recent Changes**
-* Updated the project board to reflect the new feature priorities
-* Conducted a thorough review of the {techStack} documentation to ensure compliance with the project requirements
+* **UI Improvements**:
+  - Added Radix UI Dialog component
+  - Enhanced form input placeholders
+  - Improved DocsList component display
+* **Documentation Generation**:
+  - Implemented comprehensive generation form
+  - Added file download and status tracking
+  - Integrated AI SDK and LangGraph
 
-**Next Steps**
-* Complete the implementation of the {features} features
-* Conduct a thorough testing of the application to ensure it meets the project requirements
+## Current Focus
 
-**Active Decisions and Considerations**
-* We are considering using a third-party library to handle {techStack} specific tasks
-* We are actively monitoring the {techStack} community for any updates or changes that may impact the project
+* Refining documentation generation UI
+* Enhancing documentation display in DocsList
+
+## Next Steps
+
+1. Add documentation preview feature
+2. Copy docs to clipboard feature inside modal
