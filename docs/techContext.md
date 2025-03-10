@@ -1,21 +1,28 @@
-### Technologies Used
-- **Frontend:** Next.js
-- **AI Agents:** LangGraph.js
 
-### Development Setup
-- Next.js framework for frontend & backend
-- LangGraph.js for AI-driven workflows
+**Technologies Used**
 
-### Technical Constraints
-- Ensuring AI-generated content is accurate and relevant.
-- Managing scalability and performance.
+* **Programming Language**: [techStack].language
+* **Frontend Framework**: [techStack].frontend
+* **Backend Framework**: [techStack].backend
+* **Database**: [techStack].database
+* **API Gateway**: [techStack].apiGateway
+* **Testing Framework**: [techStack].testing
 
-### Dependencies
-- Next.js
-- use shadcn/ui for components
-- use lucide for icons
-- use vercel ai sdk for ai
-- use tailwindcss for styling
-- use react-hook-form for form handling
-- use react-markdown for markdown rendering
-- LangGraph.js
+**Development Setup**
+
+* **IDE**: [techStack].ide
+* **Code Editor**: [techStack].codeEditor
+* **Version Control System**: [techStack].versionControl
+* **Build Tool**: [techStack].buildTool
+* **Deployment Tool**: [techStack].deploymentTool
+
+**Technical Constraints**
+
+* **Performance**: The system must handle [features].performance
+* **Security**: The system must adhere to [features].security
+* **Scalability**: The system must scale to handle [features].scalability
+
+**Dependencies**
+
+* **External Libraries**: [techStack].externalLibraries
+* **Third-Party Services**: [techStack].thirdPartyServices

@@ -1,7 +1,8 @@
+'use server';
 import { StateGraph, Annotation, END, START } from "@langchain/langgraph";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ChatOpenAI } from "@langchain/openai";
 import { writeFile } from "fs/promises";
+import { ChatOpenAI } from "@langchain/openai";
 import path from "path";
 import { env } from "@/env";
 import { JsonOutputParser } from "@langchain/core/output_parsers";
@@ -10,11 +11,13 @@ import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { ChatGroq } from "@langchain/groq";
 
 
-const groqModel = new ChatGroq({
-  modelName: "llama3-8b-8192",
+const groqModelJSON = new ChatGroq({
+  modelName: "llama3-70b-8192",
   apiKey: env.GROQ_API_KEY,
   temperature: 0.5,
   maxRetries: 2,
+}).bind({
+  response_format: { type: "json_object" },
 });
 
 const systemMessage = new SystemMessage("You are an expert project/product manager. You are tasked with generating documentation for a project. Each document should be in markdown format. The documents should be well-organized, concise, and easy to understand.");
@@ -29,13 +32,16 @@ const projectBriefPrompt = ChatPromptTemplate.fromMessages([
   Tech Stack: {techStack}
   Features: {features}
   overview: {overview}
-  Must follow Notes:
-  1. Also generate a summary of the project brief in JSON format.
-  2. The output should be a valid JSON object in the following format:
+  Must follow these instructions EXACTLY:
+  1. Your response MUST be a valid JSON object
+  2. The JSON object MUST follow this exact structure:
     {
-      "summary": "short description of the project brief",
-      "projectbrief": "project brief"
+      "summary": "A concise 1-2 sentence summary of the project brief",
+      "projectbrief": "The full project brief content in markdown format"
     }
+  3. Do NOT include any text outside the JSON object
+  4. Do NOT include any comments or explanations
+  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
   `),
 ]);
 
@@ -49,13 +55,16 @@ const productContextPrompt = ChatPromptTemplate.fromMessages([
   Features: {features}
   overview: {overview}
   
-  Must follow Notes:
-  1. Also generate a summary of the product context in JSON format.
-  2. The output should be a valid JSON object in the following format:
+  Must follow these instructions EXACTLY:
+  1. Your response MUST be a valid JSON object
+  2. The JSON object MUST follow this exact structure:
     {
-      "summary": "short description of the product context",
-      "productcontext": "product context"
+      "summary": "A concise 1-2 sentence summary of the product context", 
+      "productcontext": "The full product context content in markdown format"
     }
+  3. Do NOT include any text outside the JSON object
+  4. Do NOT include any comments or explanations
+  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
   `),
 ]);
 
@@ -69,14 +78,16 @@ const activeContextPrompt = ChatPromptTemplate.fromMessages([
   Features: {features}
   overview: {overview}
   
-  Must follow Notes:
-  1. Also generate a summary of the active context in JSON format.
-  2. For the active context, generate the initial steps of the project.
-  2. The output should be a valid JSON object in the following format:
+  Must follow these instructions EXACTLY:
+  1. Your response MUST be a valid JSON object
+  2. The JSON object MUST follow this exact structure:
     {
-      "summary": "short description of the active context",
-      "activecontext": "active context"
+      "summary": "A concise 1-2 sentence summary of the active context",
+      "activecontext": "The full active context content in markdown format including initial steps"
     }
+  3. Do NOT include any text outside the JSON object
+  4. Do NOT include any comments or explanations
+  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
   `),
 ]);
 
@@ -90,13 +101,16 @@ const systemPatternsPrompt = ChatPromptTemplate.fromMessages([
   Features: {features}
   overview: {overview}
   
-  Must follow Notes:
-  1. Also generate a summary of the system patterns in JSON format.
-  2. The output should be a valid JSON object in the following format:
+  Must follow these instructions EXACTLY:
+  1. Your response MUST be a valid JSON object
+  2. The JSON object MUST follow this exact structure:
     {
-      "summary": "short description of the system patterns",
-      "systempatterns": "system patterns"
+      "summary": "A concise 1-2 sentence summary of the system patterns",
+      "systempatterns": "The full system patterns content in markdown format"
     }
+  3. Do NOT include any text outside the JSON object
+  4. Do NOT include any comments or explanations
+  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
   `),
 ]);
 
@@ -110,13 +124,16 @@ const techContextPrompt = ChatPromptTemplate.fromMessages([
   Features: {features}
   overview: {overview}
   
-  Must follow Notes:
-  1. Also generate a summary of the tech context in JSON format.
-  2. The output should be a valid JSON object in the following format:
+  Must follow these instructions EXACTLY:
+  1. Your response MUST be a valid JSON object
+  2. The JSON object MUST follow this exact structure:
     {
-      "summary": "short description of the tech context",
-      "techcontext": "tech context"
+      "summary": "A concise 1-2 sentence summary of the tech context",
+      "techcontext": "The full tech context content in markdown format"
     }
+  3. Do NOT include any text outside the JSON object
+  4. Do NOT include any comments or explanations
+  5. Ensure all JSON syntax is correct including proper quotes, commas, and brackets
   `),
 ]);
 
@@ -137,7 +154,7 @@ const graphState = Annotation.Root({
 async function generateProjectBrief(state: typeof graphState.State) {
   try {
     const parser = new JsonOutputParser<ProjectBrief>();
-    const chain = projectBriefPrompt.pipe(groqModel).pipe(parser);
+    const chain = projectBriefPrompt.pipe(groqModelJSON).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -162,7 +179,7 @@ async function generateProjectBrief(state: typeof graphState.State) {
 async function generateProductContext(state: typeof graphState.State) {
   try {
     const parser = new JsonOutputParser<ProductContext>();
-    const chain = productContextPrompt.pipe(groqModel).pipe(parser);
+    const chain = productContextPrompt.pipe(groqModelJSON).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -187,7 +204,7 @@ async function generateProductContext(state: typeof graphState.State) {
 async function generateActiveContext(state: typeof graphState.State) {
   try {
     const parser = new JsonOutputParser<ActiveContext>();
-    const chain = activeContextPrompt.pipe(groqModel).pipe(parser);
+    const chain = activeContextPrompt.pipe(groqModelJSON).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -212,7 +229,7 @@ async function generateActiveContext(state: typeof graphState.State) {
 async function generateSystemPatterns(state: typeof graphState.State) {
   try {
     const parser = new JsonOutputParser<SystemPatterns>();
-    const chain = systemPatternsPrompt.pipe(groqModel).pipe(parser);
+    const chain = systemPatternsPrompt.pipe(groqModelJSON).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -237,7 +254,7 @@ async function generateSystemPatterns(state: typeof graphState.State) {
 async function generateTechContext(state: typeof graphState.State) {
   try {
     const parser = new JsonOutputParser<TechContext>();
-    const chain = techContextPrompt.pipe(groqModel).pipe(parser);
+    const chain = techContextPrompt.pipe(groqModelJSON).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,

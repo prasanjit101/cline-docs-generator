@@ -1,7 +1,13 @@
+'use client';
+
 import React, { useState } from 'react';
 import { generateDocs, writeDocsToFiles } from '@/lib/server/docsAgent';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Button } from './ui/button';
+import { Card, CardContent } from './ui/card';
 
 interface FormValues {
     idea: string;
@@ -56,11 +62,12 @@ const FormComponent: React.FC = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <div>
+        <Card className='py-8'>
+            <CardContent>
+                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-2'>
                     <label htmlFor="idea">Idea:</label>
-                    <input
+                        <Input
                         type="text"
                         id="idea"
                         name="idea"
@@ -69,9 +76,9 @@ const FormComponent: React.FC = () => {
                         disabled={loading}
                     />
                 </div>
-                <div>
+                    <div className='flex flex-col gap-2'>
                     <label htmlFor="techStack">Tech Stack:</label>
-                    <input
+                        <Input
                         type="text"
                         id="techStack"
                         name="techStack"
@@ -80,9 +87,9 @@ const FormComponent: React.FC = () => {
                         disabled={loading}
                     />
                 </div>
-                <div>
+                    <div className='flex flex-col gap-2'>
                     <label htmlFor="features">Features:</label>
-                    <textarea
+                        <Textarea
                         id="features"
                         name="features"
                         value={formValues.features}
@@ -90,24 +97,23 @@ const FormComponent: React.FC = () => {
                         disabled={loading}
                     />
                 </div>
-                <button type="submit" disabled={loading}>
+                    <Button type="submit" disabled={loading}>
                     {loading ? 'Generating...' : 'Submit'}
-                </button>
+                    </Button>
             </form>
 
-            {error && <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>}
+                {error && <div className='text-red-500 mt-4'>{error}</div>}
 
             {docs && (
-                <div style={{ marginTop: '2rem' }}>
+                    <div className='mt-4'>
                     <h3>Generated Documentation</h3>
-                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-                        <button
-                            onClick={() => setDocs({ ...docs, status: 'ready' })}
-                            style={{ padding: '0.5rem 1rem', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px' }}
+                        <div className='flex gap-4 mb-4'>
+                            <Button
+                                onClick={() => setDocs({ ...docs, status: 'ready' })}
                         >
                             Mark as Ready
-                        </button>
-                        <button
+                            </Button>
+                            <Button
                             onClick={async () => {
                                 try {
                                     await writeDocsToFiles(docs);
@@ -131,38 +137,38 @@ const FormComponent: React.FC = () => {
                                     setError('Failed to download documentation');
                                     console.error(err);
                                 }
-                            }}
-                            style={{ padding: '0.5rem 1rem', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '4px' }}
+                                }}
                         >
                             Download as ZIP
-                        </button>
+                            </Button>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-                        <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '1rem' }}>
+                        <div className='grid grid-cols-2 gap-4'>
+                            <div>
                             <h4>Project Brief</h4>
-                            <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{docs.projectbrief}</div>
+                                <div className='whitespace-pre-wrap font-mono'>{docs.projectbrief}</div>
                         </div>
-                        <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '1rem' }}>
+                            <div>
                             <h4>Product Context</h4>
-                            <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{docs.productContext}</div>
+                                <div className='whitespace-pre-wrap font-mono'>{docs.productContext}</div>
                         </div>
-                        <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '1rem' }}>
+                            <div>
                             <h4>Active Context</h4>
-                            <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{docs.activeContext}</div>
+                                <div className='whitespace-pre-wrap font-mono'>{docs.activeContext}</div>
                         </div>
-                        <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '1rem' }}>
+                            <div>
                             <h4>System Patterns</h4>
-                            <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{docs.systemPatterns}</div>
+                                <div className='whitespace-pre-wrap font-mono'>{docs.systemPatterns}</div>
                         </div>
-                        <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '1rem' }}>
+                            <div>
                             <h4>Tech Context</h4>
-                            <div style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>{docs.techContext}</div>
+                                <div className='whitespace-pre-wrap font-mono'>{docs.techContext}</div>
                         </div>
                     </div>
                 </div>
             )}
-        </div>
+            </CardContent>
+        </Card>
     );
 };
 
