@@ -317,13 +317,3 @@ export async function generateDocs(idea: string, techStack: string, features: st
     summary: result.summary,
   };
 }
-
-// Function to write generated docs to files
-export async function writeDocsToFiles(docs: any, basePath: string = "docs") {
-  await writeFile(path.join(basePath, "projectbrief.md"), docs.projectbrief);
-  await writeFile(path.join(basePath, "productContext.md"), docs.productContext);
-  await writeFile(path.join(basePath, "activeContext.md"), docs.activeContext);
-  await writeFile(path.join(basePath, "systemPatterns.md"), docs.systemPatterns);
-  await writeFile(path.join(basePath, "techContext.md"), docs.techContext);
-  await writeFile(path.join(basePath, "progress.md"), docs.progress);
-}

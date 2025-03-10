@@ -3,8 +3,6 @@
 - Form component with submission logic.
 - AI-powered documentation generation integration.
 - Documentation display and download functionality.
-- Mark as ready status updates.
-- ZIP file generation with all documentation files.
 
 ### Current Status
 - Form component fully implemented with all features.

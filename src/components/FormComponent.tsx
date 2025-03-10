@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { generateDocs, writeDocsToFiles } from '@/lib/server/docsAgent';
+import { generateDocs } from '@/lib/server/docsAgent';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { Input } from './ui/input';
@@ -106,42 +106,7 @@ const FormComponent: React.FC = () => {
 
             {docs && (
                     <div className='mt-4'>
-                    <h3>Generated Documentation</h3>
-                        <div className='flex gap-4 mb-4'>
-                            <Button
-                                onClick={() => setDocs({ ...docs, status: 'ready' })}
-                        >
-                            Mark as Ready
-                            </Button>
-                            <Button
-                            onClick={async () => {
-                                try {
-                                    await writeDocsToFiles(docs);
-                                    const zip = new JSZip();
-                                    const files = [
-                                        'projectbrief.md',
-                                        'productContext.md',
-                                        'activeContext.md',
-                                        'systemPatterns.md',
-                                        'techContext.md'
-                                    ];
-
-                                    for (const file of files) {
-                                        const content = await fetch(`/docs/${file}`).then(res => res.text());
-                                        zip.file(file, content);
-                                    }
-
-                                    const content = await zip.generateAsync({ type: 'blob' });
-                                    saveAs(content, 'docs.zip');
-                                } catch (err) {
-                                    setError('Failed to download documentation');
-                                    console.error(err);
-                                }
-                                }}
-                        >
-                            Download as ZIP
-                            </Button>
-                    </div>
+                        <h3>Generated Documentation</h3>
 
                         <div className='grid grid-cols-2 gap-4'>
                             <div>
