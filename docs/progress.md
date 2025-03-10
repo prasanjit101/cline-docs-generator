@@ -16,6 +16,4 @@
 
 ## Remaining Tasks
 
-1. Documentation preview feature
-2. Copy docs to clipboard feature inside modal
-3. Performance optimization
+* download docs as a zip file 'docs.zip' as soon as docs are generated

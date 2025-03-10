@@ -10,13 +10,12 @@
   - Implemented comprehensive generation form
   - Added file download
   - Integrated AI SDK and LangGraph
+  - Fixed bug where docs were not being generated
 
 ## Current Focus
 
-* Refining documentation generation UI
-* Enhancing documentation display in DocsList
+* download docs as a zip file 'docs.zip' as soon as docs are generated
 
 ## Next Steps
 
-1. Add documentation preview feature
-2. Copy docs to clipboard feature inside modal
+* Add documentation preview feature

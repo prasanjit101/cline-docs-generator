@@ -3,6 +3,7 @@ import { StateGraph, Annotation, END, START } from "@langchain/langgraph";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { writeFile } from "fs/promises";
 import { ChatOpenAI } from "@langchain/openai";
+import JSZip from "jszip";
 import path from "path";
 import { env } from "@/env";
 import { JsonOutputParser } from "@langchain/core/output_parsers";
@@ -291,6 +292,16 @@ graph.addNode("generateProjectBrief", generateProjectBrief)
 const app = graph.compile();
 
 // Main function to run the graph
+export async function generateAndDownloadDocs(idea: string, techStack: string, features: string) {
+  const docs = await generateDocs(idea, techStack, features);
+  return new Response(docs.zip, {
+    headers: {
+      'Content-Type': 'application/zip',
+      'Content-Disposition': 'attachment; filename="memory-bank.zip"'
+    }
+  });
+}
+
 export async function generateDocs(idea: string, techStack: string, features: string) {
   const initialState: DocsAgentStateType = {
     idea,
@@ -305,12 +316,23 @@ export async function generateDocs(idea: string, techStack: string, features: st
   };
 
   const result = await app.invoke(initialState);
+  // Create zip file
+  const zip = new JSZip();
+  zip.file("projectbrief.md", result.projectbrief);
+  zip.file("productContext.md", result.productContext);
+  zip.file("activeContext.md", result.activeContext);
+  zip.file("systemPatterns.md", result.systemPatterns);
+  zip.file("techContext.md", result.techContext);
+  zip.file("progress.md", result.summary);
+
+  const zipContent = await zip.generateAsync({ type: "nodebuffer" });
+
   return {
     projectbrief: result.projectbrief,
     productContext: result.productContext,
     activeContext: result.activeContext,
     systemPatterns: result.systemPatterns,
     techContext: result.techContext,
-    summary: result.summary,
+    summary: result.summary
   };
 }

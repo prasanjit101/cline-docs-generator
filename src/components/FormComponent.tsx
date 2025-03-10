@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { generateDocs } from '@/lib/server/docsAgent';
+import { generateDocs, generateAndDownloadDocs } from '@/lib/server/docsAgent';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
@@ -60,6 +60,27 @@ const FormComponent: React.FC = () => {
         }
     };
 
+    const handleDownload = async () => {
+        try {
+            const response = await generateAndDownloadDocs(
+                formValues.idea,
+                formValues.techStack,
+                formValues.features
+            );
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'memory-bank.zip';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            setError('Failed to download documentation. Please try again.');
+            console.error(err);
+        }
+    };
+
     return (
         <Card className='py-8'>
             <CardContent>
@@ -110,13 +131,24 @@ const FormComponent: React.FC = () => {
                 <div className="mt-12">
                     <h2 className="text-2xl font-bold mb-4">Documentation Files</h2>
                     {!docs && <div className='text-gray-500'>No docs yet.</div>}
-                    {docs && <DocsList docs={[
+                    {docs && (
+                        <>
+                            <Button
+                                onClick={handleDownload}
+                                className="mb-4"
+                                disabled={!docs}
+                            >
+                                Download All as ZIP
+                            </Button>
+                            <DocsList docs={[
                         { name: 'Project Brief', content: docs.projectbrief, status: docs.projectbrief ? 'ready' : 'failed', path: 'docs/projectbrief.md' },
                         { name: 'Product Context', content: docs.productContext, status: docs.productContext ? 'ready' : 'failed', path: 'docs/productContext.md' },
                         { name: 'Active Context', content: docs.activeContext, status: docs.activeContext ? 'ready' : 'failed', path: 'docs/activeContext.md' },
                         { name: 'System Patterns', content: docs.systemPatterns, status: docs.systemPatterns ? 'ready' : 'failed', path: 'docs/systemPatterns.md' },
                         { name: 'Tech Context', content: docs.techContext, status: docs.techContext ? 'ready' : 'failed', path: 'docs/techContext.md' }
-                    ]} />}
+                            ]} />
+                        </>
+                    )}
                 </div>
             </CardContent>
         </Card>
