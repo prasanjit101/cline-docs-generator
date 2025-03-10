@@ -13,7 +13,7 @@ export default function HomePage() {
         <div className="flex items-center font-semibold"><FileCode className="mr-2 h-4 w-4" /> cline-docs-generator
         </div>
         <Link
-          href="https://github.com/yourusername/cline-docs-generator"
+          href="https://github.com/prasanjit101/cline-docs-generator"
           className={cn(buttonVariants({ variant: "outline" }))}
           target="_blank"
           rel="noopener noreferrer"
