@@ -8,7 +8,7 @@
   - Improved DocsList component display
 * **Documentation Generation**:
   - Implemented comprehensive generation form
-  - Added file download and status tracking
+  - Added file download
   - Integrated AI SDK and LangGraph
 
 ## Current Focus
