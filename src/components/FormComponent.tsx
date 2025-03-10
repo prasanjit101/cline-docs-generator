@@ -32,59 +32,49 @@ const FormComponent: React.FC = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [docs, setDocs] = useState<DocsResponse | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleDownload = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
-        setDocs(null);
 
         try {
-            const generatedDocs = await generateDocs(
+            const { zipContent, fileName } = await generateAndDownloadDocs(
                 formValues.idea,
                 formValues.techStack,
                 formValues.features
             );
-            setDocs(generatedDocs);
-        } catch (err) {
-            setError('Failed to generate documentation. Please try again.');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleDownload = async () => {
-        try {
-            const response = await generateAndDownloadDocs(
-                formValues.idea,
-                formValues.techStack,
-                formValues.features
-            );
-            const blob = await response.blob();
+            const byteCharacters = atob(zipContent);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: 'application/zip' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'memory-bank.zip';
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
         } catch (err) {
             setError('Failed to download documentation. Please try again.');
             console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <Card className='py-8'>
             <CardContent>
-                <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+                <form onSubmit={handleDownload} className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
                     <label htmlFor="idea">Idea:</label>
                         <Input
@@ -127,29 +117,6 @@ const FormComponent: React.FC = () => {
             </form>
 
                 {error && <div className='text-red-500 mt-4'>{error}</div>}
-
-                <div className="mt-12">
-                    <h2 className="text-2xl font-bold mb-4">Documentation Files</h2>
-                    {!docs && <div className='text-gray-500'>No docs yet.</div>}
-                    {docs && (
-                        <>
-                            <Button
-                                onClick={handleDownload}
-                                className="mb-4"
-                                disabled={!docs}
-                            >
-                                Download All as ZIP
-                            </Button>
-                            <DocsList docs={[
-                        { name: 'Project Brief', content: docs.projectbrief, status: docs.projectbrief ? 'ready' : 'failed', path: 'docs/projectbrief.md' },
-                        { name: 'Product Context', content: docs.productContext, status: docs.productContext ? 'ready' : 'failed', path: 'docs/productContext.md' },
-                        { name: 'Active Context', content: docs.activeContext, status: docs.activeContext ? 'ready' : 'failed', path: 'docs/activeContext.md' },
-                        { name: 'System Patterns', content: docs.systemPatterns, status: docs.systemPatterns ? 'ready' : 'failed', path: 'docs/systemPatterns.md' },
-                        { name: 'Tech Context', content: docs.techContext, status: docs.techContext ? 'ready' : 'failed', path: 'docs/techContext.md' }
-                            ]} />
-                        </>
-                    )}
-                </div>
             </CardContent>
         </Card>
     );

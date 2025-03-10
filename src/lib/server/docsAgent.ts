@@ -294,12 +294,22 @@ const app = graph.compile();
 // Main function to run the graph
 export async function generateAndDownloadDocs(idea: string, techStack: string, features: string) {
   const docs = await generateDocs(idea, techStack, features);
-  return new Response(docs.zip, {
-    headers: {
-      'Content-Type': 'application/zip',
-      'Content-Disposition': 'attachment; filename="memory-bank.zip"'
-    }
-  });
+
+  // Create zip file
+  const zip = new JSZip();
+  zip.file("projectbrief.md", docs.projectbrief);
+  zip.file("productContext.md", docs.productContext);
+  zip.file("activeContext.md", docs.activeContext);
+  zip.file("systemPatterns.md", docs.systemPatterns);
+  zip.file("techContext.md", docs.techContext);
+  zip.file("progress.md", "Starting to work on the project...");
+
+  const zipContent = await zip.generateAsync({ type: "base64" });
+
+  return {
+    zipContent,
+    fileName: "memory-bank.zip"
+  };
 }
 
 export async function generateDocs(idea: string, techStack: string, features: string) {
