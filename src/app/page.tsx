@@ -58,7 +58,7 @@ export default function HomePage() {
             <p>3. Download the docs as a zip file</p>
             <p>4. unzip the file and place the unzipped folder in the root of your project</p>
             <p>5. Create a new .clinerule file in the root of your project</p>
-            <p>6. Add the following to the .clinerule file as guided in the official Cline docs :
+            <p>6. Add the following to the .clinerules file as guided in the official Cline docs :
               <a href="https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank" target="_blank" className="text-blue-500" rel="noopener noreferrer">https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank</a></p>
           </div>
         </div>
