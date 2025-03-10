@@ -10,15 +10,55 @@ import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { AgentState, ProjectBrief, ProductContext, ActiveContext, SystemPatterns, TechContext } from "@/types/docs-agent.dto";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { ChatGroq } from "@langchain/groq";
+import { ChatAnthropic } from "@langchain/anthropic";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 
-const groqModelJSON = new ChatGroq({
-  modelName: "llama3-70b-8192",
-  apiKey: env.GROQ_API_KEY,
-  temperature: 0.5,
-  maxRetries: 2,
-}).bind({
-  response_format: { type: "json_object" },
-});
+function getLLM(provider: string, apiKey: string) {
+  const commonConfig = {
+    temperature: 0.5,
+    maxRetries: 2,
+  };
+
+  switch (provider) {
+    case "openai":
+      return new ChatOpenAI({
+        ...commonConfig,
+        apiKey,
+        modelName: "gpt-4-turbo-preview",
+      });
+    case "anthropic":
+      return new ChatAnthropic({
+        ...commonConfig,
+        apiKey,
+        modelName: "claude-3-opus-20240229",
+      });
+    case "google":
+      return new ChatGoogleGenerativeAI({
+        ...commonConfig,
+        apiKey,
+        modelName: "gemini-pro",
+      });
+    case "groq":
+      return new ChatGroq({
+        ...commonConfig,
+        apiKey,
+        modelName: "llama3-70b-8192",
+      }).bind({
+        response_format: { type: "json_object" },
+      });
+    case "openrouter":
+      return new ChatOpenAI({
+        ...commonConfig,
+        apiKey,
+        modelName: "deepseek/deepseek-chat:free",
+        configuration: {
+          baseURL: "https://openrouter.ai/api/v1"
+        }
+      });
+    default:
+      throw new Error(`Unsupported provider: ${provider}`);
+  }
+}
 
 
 const DocsAgentState = Annotation.Root({
@@ -31,6 +71,8 @@ const DocsAgentState = Annotation.Root({
   systemPatterns: Annotation<string>,
   techContext: Annotation<string>,
   summary: Annotation<string>,
+  provider: Annotation<string>,
+  apiKey: Annotation<string>,
 });
 
 type DocsAgentStateType = typeof DocsAgentState.State;
@@ -151,7 +193,7 @@ async function generateProjectBrief(state: DocsAgentStateType): Promise<Partial<
       new HumanMessage(projectBriefPrompt(state)),
     ]);
     const parser = new JsonOutputParser<ProjectBrief>();
-    const chain = prompt.pipe(groqModelJSON).pipe(parser);
+    const chain = prompt.pipe(getLLM(state.provider, state.apiKey)).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
     });
@@ -175,7 +217,7 @@ async function generateProductContext(state: DocsAgentStateType): Promise<Partia
       new HumanMessage(productContextPrompt(state)),
     ]);
     const parser = new JsonOutputParser<ProductContext>();
-    const chain = prompt.pipe(groqModelJSON).pipe(parser);
+    const chain = prompt.pipe(getLLM(state.provider, state.apiKey)).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -202,7 +244,7 @@ async function generateActiveContext(state: DocsAgentStateType): Promise<Partial
       new HumanMessage(activeContextPrompt(state)),
     ]);
     const parser = new JsonOutputParser<ActiveContext>();
-    const chain = prompt.pipe(groqModelJSON).pipe(parser);
+    const chain = prompt.pipe(getLLM(state.provider, state.apiKey)).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -229,7 +271,7 @@ async function generateSystemPatterns(state: DocsAgentStateType): Promise<Partia
       new HumanMessage(systemPatternsPrompt(state)),
     ]);
     const parser = new JsonOutputParser<SystemPatterns>();
-    const chain = prompt.pipe(groqModelJSON).pipe(parser);
+    const chain = prompt.pipe(getLLM(state.provider, state.apiKey)).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -256,7 +298,7 @@ async function generateTechContext(state: DocsAgentStateType): Promise<Partial<D
       new HumanMessage(techContextPrompt(state)),
     ]);
     const parser = new JsonOutputParser<TechContext>();
-    const chain = prompt.pipe(groqModelJSON).pipe(parser);
+    const chain = prompt.pipe(getLLM(state.provider, state.apiKey)).pipe(parser);
     const response = await chain.invoke({
       idea: state.idea,
       techStack: state.techStack,
@@ -292,8 +334,8 @@ graph.addNode("generateProjectBrief", generateProjectBrief)
 const app = graph.compile();
 
 // Main function to run the graph
-export async function generateAndDownloadDocs(idea: string, techStack: string, features: string) {
-  const docs = await generateDocs(idea, techStack, features);
+export async function generateAndDownloadDocs(idea: string, techStack: string, features: string, provider: string, apiKey: string) {
+  const docs = await generateDocs(idea, techStack, features, provider, apiKey);
 
   // Create zip file
   const zip = new JSZip();
@@ -312,7 +354,7 @@ export async function generateAndDownloadDocs(idea: string, techStack: string, f
   };
 }
 
-export async function generateDocs(idea: string, techStack: string, features: string) {
+export async function generateDocs(idea: string, techStack: string, features: string, provider: string, apiKey: string) {
   const initialState: DocsAgentStateType = {
     idea,
     techStack,
@@ -323,19 +365,11 @@ export async function generateDocs(idea: string, techStack: string, features: st
     systemPatterns: "",
     techContext: "",
     summary: "",
+    provider,
+    apiKey
   };
 
   const result = await app.invoke(initialState);
-  // Create zip file
-  const zip = new JSZip();
-  zip.file("projectbrief.md", result.projectbrief);
-  zip.file("productContext.md", result.productContext);
-  zip.file("activeContext.md", result.activeContext);
-  zip.file("systemPatterns.md", result.systemPatterns);
-  zip.file("techContext.md", result.techContext);
-  zip.file("progress.md", result.summary);
-
-  const zipContent = await zip.generateAsync({ type: "nodebuffer" });
 
   return {
     projectbrief: result.projectbrief,

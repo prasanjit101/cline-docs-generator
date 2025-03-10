@@ -18,4 +18,6 @@
 
 ## Next Steps
 
+* Add support for open ai, gemini, claude, grok ai models
+* Allow users to enter their own ai key and use that key to generate docs
 * Add documentation preview feature

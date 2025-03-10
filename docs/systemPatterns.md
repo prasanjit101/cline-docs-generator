@@ -26,6 +26,7 @@ flowchart TD
 
 ## Data Flow
 
-1. User input collected via FormComponent
-2. Data processed through AI SDK and LangGraph
-3. Docs are downloaded as a zip file 'docs.zip' as soon as docs are generated
+1. users enter their own ai key and choose the ai model they want to use
+2. User input collected via FormComponent
+3. Data processed through AI SDK and LangGraph
+4. Docs are downloaded as a zip file 'docs.zip' as soon as docs are generated

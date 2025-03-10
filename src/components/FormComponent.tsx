@@ -38,16 +38,30 @@ const FormComponent: React.FC = () => {
         setFormValues({ ...formValues, [name]: value });
     };
 
+    function getProviderConfig() {
+        if (typeof window !== "undefined") {
+            const provider = localStorage.getItem("aiProvider") || "openai";
+            const apiKey = localStorage.getItem("aiApiKey") || "";
+            return { provider, apiKey };
+        }
+        return { provider: "openai", apiKey: "" };
+    }
+
+
     const handleDownload = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         setError(null);
 
+        const { provider = "", apiKey = "" } = getProviderConfig();
+
         try {
             const { zipContent, fileName } = await generateAndDownloadDocs(
                 formValues.idea,
                 formValues.techStack,
-                formValues.features
+                formValues.features,
+                provider,
+                apiKey
             );
             const byteCharacters = atob(zipContent);
             const byteNumbers = new Array(byteCharacters.length);

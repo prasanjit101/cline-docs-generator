@@ -4,6 +4,7 @@ import { Code, FileCode } from "lucide-react";
 import Link from "next/link";
 import FormComponent from "@/components/FormComponent";
 import DocsList from "@/components/DocsList";
+import { ModelSelector } from "@/components/ModelSelector";
 
 export default function HomePage() {
   return (
@@ -52,6 +53,11 @@ export default function HomePage() {
 
         {/* Form Section */}
         <div className="mt-12 text-left">
+          <h2 className="text-2xl font-bold mb-6">AI Configuration</h2>
+          <div className="mb-8 p-6 border rounded-lg bg-white shadow-sm">
+            <ModelSelector />
+          </div>
+
           <h2 className="text-2xl font-bold mb-6">Generate Documentation</h2>
           <FormComponent />
         </div>

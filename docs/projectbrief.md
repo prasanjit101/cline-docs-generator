@@ -31,13 +31,3 @@ The goal of this project is to create a self-documenting development system for 
 * A fully functional Cline documentation generator
 * Comprehensive documentation for the system
 * Memory bank structure and workflows
-
-**Timeline**
-----------
-
-* Project start date: [Start Date]
-* Project end date: [End Date]
-* Milestones:
-    * Memory Bank structure: [Date]
-    * Documentation workflows: [Date]
-    * Integration with Cline: [Date]
