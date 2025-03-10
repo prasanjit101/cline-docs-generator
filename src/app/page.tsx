@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Code, FileCode } from "lucide-react";
 import Link from "next/link";
 import FormComponent from "@/components/FormComponent";
+import DocsList from "@/components/DocsList";
 
 export default function HomePage() {
   return (
@@ -53,6 +54,10 @@ export default function HomePage() {
         <div className="mt-12 text-left">
           <h2 className="text-2xl font-bold mb-6">Generate Documentation</h2>
           <FormComponent />
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold mb-4">Documentation Files</h2>
+            <DocsList docs={[]} />
+          </div>
         </div>
       </main>
     </div>

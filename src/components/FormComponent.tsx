@@ -73,6 +73,7 @@ const FormComponent: React.FC = () => {
                         name="idea"
                         value={formValues.idea}
                         onChange={handleChange}
+                            placeholder='What is the project about?'
                         disabled={loading}
                     />
                 </div>
@@ -84,6 +85,7 @@ const FormComponent: React.FC = () => {
                         name="techStack"
                         value={formValues.techStack}
                         onChange={handleChange}
+                            placeholder='What is the tech stack?'
                         disabled={loading}
                     />
                 </div>
@@ -95,6 +97,8 @@ const FormComponent: React.FC = () => {
                         value={formValues.features}
                         onChange={handleChange}
                         disabled={loading}
+                            placeholder='What are the features?'
+                            rows={4}
                     />
                 </div>
                     <Button type="submit" disabled={loading}>
