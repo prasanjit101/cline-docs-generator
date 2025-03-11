@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -20,6 +20,13 @@ export function ModelSelector() {
             alert("Please enter a valid API key");
         }
     };
+
+    useEffect(() => {
+        const provider = localStorage.getItem("aiProvider") || "openai";
+        const apiKey = localStorage.getItem("aiApiKey") || "";
+        setProvider(provider);
+        setApiKey(apiKey);
+    }, []);
 
     return (
         <Accordion type="single" collapsible className="w-full">
