@@ -1,6 +1,6 @@
 {
   "git": {
-    "deploymentEnabled": false,
+    "deploymentEnabled": true,
     "ignore": []
   },
   "github": {
@@ -11,7 +11,10 @@
     {
       "name": "main",
       "deploymentEnabled": true
-    }
+    },
+	{
+		"name": "dev",
+		"deploymentEnabled": false
+	}
   ]
 }
-
