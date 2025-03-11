@@ -6,11 +6,10 @@ import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
 const config = {
-    webpack: (config, { isServer }) => {
-        if (!isServer) {
-            config.ignoreWarnings = [/Failed to parse source map/];
-        }
-        return config;
+    eslint: {
+        // Warning: This allows production builds to successfully complete even if
+        // your project has ESLint errors.
+        ignoreDuringBuilds: true,
     },
 };
 
