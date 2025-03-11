@@ -29,4 +29,11 @@ run the app
 npm run dev
 ```
 
+### How to use the app
 
+1. Enter your idea, tech stack, and features
+2. Click generate
+3. Download the docs as a zip file
+4. unzip the file and place the unzipped folder in the root of your project
+5. Create a new .clinerule file in the root of your project
+6. Add the following to the .clinerules file as guided in the official Cline docs :https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank
