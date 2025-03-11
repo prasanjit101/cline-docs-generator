@@ -1,20 +1,7 @@
 {
-  "git": {
-    "deploymentEnabled": true,
-    "ignore": []
-  },
-  "github": {
-    "silent": true
-  },
-  "alias": "cline-docs-generator",
-  "branches": [
-    {
-      "name": "main",
-      "deploymentEnabled": true
-    },
-	{
-		"name": "dev",
-		"deploymentEnabled": false
+	"git": {
+		"deploymentEnabled": {
+			"dev": false
+		}
 	}
-  ]
 }
