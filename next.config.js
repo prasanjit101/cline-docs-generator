@@ -5,6 +5,13 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.ignoreWarnings = [/Failed to parse source map/];
+        }
+        return config;
+    },
+};
 
 export default config;

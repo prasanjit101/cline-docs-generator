@@ -10,8 +10,8 @@ export function getLLM(providerWithName: string, apiKey: string) {
     };
 
     // Extract provider from "name:provider" format
-    const provider = providerWithName.split(':')[1] || providerWithName;
-    const modelName = providerWithName.split(':')[0] || "gpt-4-turbo-preview";
+    const provider = providerWithName.split(':')[1] ?? providerWithName;
+    const modelName = providerWithName.split(':')[0] ?? "gpt-4o-mini";
 
     switch (provider) {
         case "openai":

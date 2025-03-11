@@ -43,7 +43,7 @@ export default function HomePage() {
             <p className="mb-4">
               Generate docs that transforms Cline into a self-documenting development system that maintains context across sessions through a structured <strong>Memory Bank</strong>. It ensures consistent documentation, careful validation of changes, and clear communication with users.
             </p>
-            <h3 className="text-lg font-semibold mb-2">What's it good for?</h3>
+            <h3 className="text-lg font-semibold mb-2">What&apos;s it good for?</h3>
             <ul className="list-disc list-inside space-y-1">
               <li>Any project that needs context tracking</li>
               <li>Projects of any size or tech stack</li>

@@ -22,8 +22,8 @@ export function ModelSelector() {
     };
 
     useEffect(() => {
-        const provider = localStorage.getItem("aiProvider") || "openai";
-        const apiKey = localStorage.getItem("aiApiKey") || "";
+        const provider = localStorage.getItem("aiProvider") ?? "openai";
+        const apiKey = localStorage.getItem("aiApiKey") ?? "";
         setProvider(provider);
         setApiKey(apiKey);
     }, []);

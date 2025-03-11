@@ -53,7 +53,7 @@ const DocsList = ({ docs }: { docs: DocItem[] }) => {
                 <DialogContent className="max-w-3xl max-h-[80vh] overflow-auto">
                     <DialogHeader className='flex items-center justify-between'>
                         <DialogTitle>{currentDoc?.name}</DialogTitle>
-                        <CopyToClipboard text={currentDoc?.content || ''} />
+                        <CopyToClipboard text={currentDoc?.content ?? ''} />
                     </DialogHeader>
                     <p className='text-sm text-gray-500'>save in docs folder: {currentDoc?.path}</p>
                     <pre className="whitespace-pre-wrap">{currentDoc?.content}</pre>

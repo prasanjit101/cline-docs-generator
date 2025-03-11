@@ -40,8 +40,8 @@ const FormComponent: React.FC = () => {
 
     function getProviderConfig() {
         if (typeof window !== "undefined") {
-            const provider = localStorage.getItem("aiProvider") || "openai";
-            const apiKey = localStorage.getItem("aiApiKey") || "";
+            const provider = localStorage.getItem("aiProvider") ?? "openai";
+            const apiKey = localStorage.getItem("aiApiKey") ?? "";
             return { provider, apiKey };
         }
         return { provider: "openai", apiKey: "" };
