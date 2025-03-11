@@ -11,3 +11,22 @@ Transforms Cline into a self-documenting development system that maintains  cont
 - Projects of any size or tech stack
 - Both new and ongoing development
 - Long-term maintenance work
+
+### How to use
+
+download the repo
+```bash
+git clone https://github.com/cline-ai/docs-generator.git
+```
+
+install dependencies
+```bash
+npm install
+```
+
+run the app
+```bash
+npm run dev
+```
+
+

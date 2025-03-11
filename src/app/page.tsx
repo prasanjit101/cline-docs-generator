@@ -8,7 +8,7 @@ import { ModelSelector } from "@/components/ModelSelector";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col items-center w-1/2 mx-auto py-8">
+    <div className="min-h-screen flex flex-col items-center mx-auto p-8">
       {/* Header with GitHub Link */}
       <nav className="w-full max-w-6xl flex justify-between items-center mb-16">
         <div className="flex items-center font-semibold"><FileCode className="mr-2 h-4 w-4" /> cline-docs-generator
@@ -33,22 +33,35 @@ export default function HomePage() {
       </nav>
 
       {/* Main Content */}
-      <main className="w-full max-w-3xl text-center mb-16 py-16">
-        <h1 className="text-5xl font-bold mb-8 text-gray-900">
-          Generate your Cline docs
-        </h1>
+      <main className="w-full grid grid-cols-2 gap-16">
+        <div className="flex flex-col md:px-16 space-y-6">
+          <h1 className="text-5xl font-bold mb-8 text-gray-900">
+            Generate your Cline docs
+          </h1>
 
-        <div className="text-center">
-          <p className="mb-4">
-            Generate docs that transforms Cline into a self-documenting development system that maintains context across sessions through a structured <strong>Memory Bank</strong>. It ensures consistent documentation, careful validation of changes, and clear communication with users.
-          </p>
-          <h3 className="text-lg font-semibold mb-2">What's it good for?</h3>
-          <ul className="list-disc list-inside space-y-1">
-            <li>Any project that needs context tracking</li>
-            <li>Projects of any size or tech stack</li>
-            <li>Both new and ongoing development</li>
-            <li>Long-term maintenance work</li>
-          </ul>
+          <div className="text-center">
+            <p className="mb-4">
+              Generate docs that transforms Cline into a self-documenting development system that maintains context across sessions through a structured <strong>Memory Bank</strong>. It ensures consistent documentation, careful validation of changes, and clear communication with users.
+            </p>
+            <h3 className="text-lg font-semibold mb-2">What's it good for?</h3>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Any project that needs context tracking</li>
+              <li>Projects of any size or tech stack</li>
+              <li>Both new and ongoing development</li>
+              <li>Long-term maintenance work</li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col justify-center">
+            <h3 className="text-lg font-semibold mb-2">How to use?</h3>
+            <p>1. Enter your idea, tech stack, and features</p>
+            <p>2. Click generate</p>
+            <p>3. Download the docs as a zip file</p>
+            <p>4. unzip the file and place the unzipped folder in the root of your project</p>
+            <p>5. Create a new .clinerule file in the root of your project</p>
+            <p>6. Add the following to the .clinerules file as guided in the official Cline docs :
+              <a href="https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank" target="_blank" className="text-blue-500" rel="noopener noreferrer">https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank</a></p>
+          </div>
         </div>
 
         {/* Form Section */}
