@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { Separator } from "./ui/separator";
+import { modelsList } from "@/lib/utils";
 
 export function ModelSelector() {
     const [provider, setProvider] = useState("openai");
@@ -19,40 +22,49 @@ export function ModelSelector() {
     };
 
     return (
-        <div className="space-y-4">
-            <div className="space-y-2">
-                <Label htmlFor="provider">AI Provider</Label>
-                <Select value={provider} onValueChange={setProvider}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select provider" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="openai">OpenAI</SelectItem>
-                        <SelectItem value="anthropic">Anthropic (Claude)</SelectItem>
-                        <SelectItem value="google">Google (Gemini)</SelectItem>
-                        <SelectItem value="groq">Groq</SelectItem>
-                        <SelectItem value="openrouter">OpenRouter</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
+        <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="model-settings">
+                <AccordionTrigger>Model Settings</AccordionTrigger>
+                <AccordionContent className="py-4">
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="provider">AI Provider</Label>
+                            <Select value={provider} onValueChange={setProvider}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select provider" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {
+                                        modelsList.map((model, i) => (
+                                            <SelectItem key={i} value={model.name + ':' + model.provider}>
+                                                {model.name}
+                                            </SelectItem>
+                                        ))
+                                    }
+                                </SelectContent>
+                            </Select>
+                        </div>
 
-            <div className="space-y-2">
-                <Label htmlFor="apiKey">API Key</Label>
-                <Input
-                    id="apiKey"
-                    type="password"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    placeholder="Enter your API key"
-                />
-            </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="apiKey">API Key</Label>
+                            <Input
+                                id="apiKey"
+                                type="password"
+                                value={apiKey}
+                                onChange={(e) => setApiKey(e.target.value)}
+                                placeholder="Enter your API key"
+                            />
+                        </div>
 
-            <button
-                onClick={handleSave}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-                Save API Key
-            </button>
-        </div>
+                        <button
+                            onClick={handleSave}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        >
+                            Save API Key
+                        </button>
+                    </div>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     );
 }
