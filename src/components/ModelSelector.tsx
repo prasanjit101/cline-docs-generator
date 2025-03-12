@@ -44,7 +44,7 @@ export function ModelSelector() {
                                     {
                                         modelsList.map((model, i) => (
                                             <SelectItem key={i} value={model.name + ':' + model.provider}>
-                                                {model.name}
+                                                {model.name + ' (' + model.provider + ')'}
                                             </SelectItem>
                                         ))
                                     }
